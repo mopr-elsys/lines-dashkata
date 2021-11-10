@@ -27,7 +27,7 @@ istream& operator>>(istream& in, Point& p) {
     
     return in;
 }
-
+//d
 struct Line {
     double A, B, C;
 
