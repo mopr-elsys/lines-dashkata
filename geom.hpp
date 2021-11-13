@@ -27,39 +27,40 @@ istream& operator>>(istream& in, Point& p) {
     
     return in;
 }
-//d
+
 struct Line {
     double A, B, C;
 
-    Line(double A = 0, double B = 0, double C = 0) : A(A), B(B), C(C) {}
+    Line(double A = 0, double B = 0, double C = 0) : A(A), B(B), C(C) {
+    }
 
     Line(const Point& p1, const Point& p2) {
-        B = -1; 
-        A = (p1.y - p2.y) / (p1.x - p2.x); 
-        
-        C = p1.y - A * p1.x;
+        A = p1.y - p2.y;
+        B = p2.x - p1.x;
+        C = -(A*p1.x + B*p1.y);
     }
 
     bool parallel(const Line& other) const {
-        return true;
+        return eq(this->A*other.B, this->B*other.A) && this->A*other.C != other.A*this->C;
     }
 
     Line parallel(const Point& p) {
-        return Line(0,0,0);
+        return Line(this->A, this->B, -(this->A*p.x + this->B*p.y));
     }
 
     bool perpendicular(const Line& other) const {
-        return true;
+        return eq(this->A*other.A, this->B*(-(other.B)));
     }
 
     Line perpendicular(const Point& p) {
-        return Line(0,0,0);
+        return Line(-(this->B), this->A, this->B*p.x-this->A*p.y);
     }
 
     void print(ostream& out) const {
         out<< A << "x + "<< B<< "y + "<< C<< " = 0";
     }
 };
+
 
 ostream& operator<<(ostream& out, const Line& l) {
     l.print(out);
